@@ -2,8 +2,6 @@
 
 Bu repo, NLP öğrenme sürecimde tuttuğum kişisel notlar ve kod özetlerinden oluşmaktadır. Temel metin ön işlemeden derin öğrenme modellerine kadar konuları adım adım, Türkçe açıklamalarla ele almaktadır.
 
-> Yeni konular öğrendikçe düzenli olarak güncellenmektedir.
-
 ---
 
 ## İçerik
@@ -13,7 +11,8 @@ google_codes/
 ├── metin_on_isleme/          # Metin temizleme ve hazırlama
 ├── metin_temsili/            # Sayısal temsil yöntemleri
 ├── nlp_temel_gorevleri/      # Temel NLP görevleri
-└── derin_ogrenme/            # RNN, GRU, LSTM modelleri
+├── derin_ogrenme/            # RNN, GRU, LSTM modelleri
+└── gelismis_nlp_gorevleri/   # Transformer tabanlı ileri düzey görevler
 ```
 
 ---
@@ -57,6 +56,14 @@ google_codes/
 | `2_gru.py` | GRU tabanlı sentiment classification — IMDB |
 | `3_lstm.py` | LSTM ile metin üretimi (text generation) |
 
+### 5. Gelişmiş NLP Görevleri
+| Dosya | Konu |
+|-------|------|
+| `1_metin_ozetleme.py` | BART (facebook/bart-large-cnn) ile metin özetleme |
+| `2_soru_cevap_sistemi.py` | BERT (SQuAD fine-tuned) ile soru cevaplama |
+| `3_bilgi_getirme.py` | BERT embedding + cosine similarity ile bilgi getirme |
+| `4_metin_cevirisi.py` | MarianMT (Helsinki-NLP) ile İngilizce→Fransızca çeviri |
+
 ---
 
 ## Kullanılan Kütüphaneler
@@ -68,6 +75,8 @@ google_codes/
 - **spaCy** — NER, morfolojik analiz, POS etiketleme
 - **pandas / NumPy** — veri işleme
 - **matplotlib** — görselleştirme (PCA)
+- **Transformers (Hugging Face)** — BART, BERT, MarianMT modelleri
+- **PyTorch** — Transformer modellerinin çalışma ortamı
 
 ---
 
@@ -76,6 +85,7 @@ google_codes/
 ```bash
 pip install nltk scikit-learn tensorflow gensim spacy pandas numpy matplotlib
 python -m spacy download en_core_web_sm
+pip install transformers torch
 ```
 
 ---
@@ -83,7 +93,7 @@ python -m spacy download en_core_web_sm
 ## Öğrenme Yolu
 
 ```
-Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenme
+Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenme → Gelişmiş NLP Görevleri
 ```
 
-Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlemek önerilir.
+Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlenilmesi önerilir.
