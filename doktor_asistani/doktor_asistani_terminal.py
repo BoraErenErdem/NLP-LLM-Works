@@ -4,7 +4,7 @@
 Problem tanımı:
     - Akıllı Doktor Asistanı: kullanıcının sağlıkla ilgili sorularını anlayan ve yanıtlayan LLM tabanlı doktor asistanı (chatbot)
     - LLM: Google Gemini API
-    - Kişiselleştirme: Kullanıcının "adını" ve "yaşını" bilerek ona göre cevap üretmeli.
+    - Kişiselleştirme: Kullanıcının "adını", "yaşını" ve "geçmişini" bilerek ona göre cevap üretmeli.
     - Hafıza (Memory) : Mesaj geçmişini hatırlayarak konuşmayı ona göre sürdürmeli.
 
 Çalışma ortamı:
