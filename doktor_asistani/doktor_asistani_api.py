@@ -34,6 +34,7 @@ user_memories: Dict[str, ConversationSummaryBufferMemory] = {} # her kullanıcı
 class ChatRequest(BaseModel): # kullanıcının gönderdiği mesaj
     name: str
     age: int
+    history: str
     message: str
 
 class ChatResponse(BaseModel): # modelin döndürdüğü yanıt
@@ -50,7 +51,7 @@ async def chat_with_doctor(request: ChatRequest):
 
         # ilk konuşma (eğer memory boşsa giriş bağlamı ekle)
         if len(memory.chat_memory.messages) == 0: # memory.chat_memory.messages -> memory'deki tüm mesaj geçmişi listesidir. # eğer memory boşsa ilk kez girdiği için prompt eklenir..!
-            intro = (f"Sen bir doktor asistanısın. Hasta: {request.name}, {request.age} yaşında. Sağlık sorunları hakkında konuşmak istiyor. Yaşına uygun, dikkatli ve nazik tavsiyeler ver. Kullanıcıya ismiyle hitap et.")
+            intro = (f"Sen bir doktor asistanısın. Hasta: {request.name}, {request.age} yaşında ve {request.history} geçmişine sahip. Sağlık sorunları hakkında konuşmak istiyor. Yaşına uygun, dikkatli ve nazik tavsiyeler ver. Kullanıcıya ismiyle hitap et.")
             memory.chat_memory.add_user_message(intro)
 
         # llm + memory = chain (zincir) yani sohbet zinciri oluştur
