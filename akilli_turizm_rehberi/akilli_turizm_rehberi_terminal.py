@@ -27,7 +27,7 @@ Ollama: https://ollama.com/
     - örn. doktor asistanı projesinde Gemini'ı API ile bulut üzerinden kullandım. bu projede Ollama sayesinde açık kaynak Gemma'yı kendi bilgisayarımda on-prem olarak çalıştırabilirim.
     - llama, mistral, gemma, qwen, deepseek vb.
     - gemma3: https://ollama.com/library/gemma3
-    - cmd => ollama run gemma3:4b -> ollama'ya gemma3 4b parametreli modeli kur. kurduktan sonra bu komutla cmd'den gemma3:4b çalışıtırabilirimm
+    - cmd => ollama run gemma3:4b -> ollama'ya gemma3 4b parametreli modeli kur. kurduktan sonra bu komutla cmd'den gemma3:4b çalışıtırabilirim
 """
 
 
