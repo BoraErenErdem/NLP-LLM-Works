@@ -31,8 +31,8 @@ Ollama: https://ollama.com/
 """
 
 
-from langchain_ollama.chat_models import ChatOllama # ollama llm arayüzü
-from langchain_classic.schema import SystemMessage, HumanMessage # chat mesaj sınıflandırıcısı
+from langchain_ollama.chat_models import ChatOllama # ollama üzerinden llm çağırmak
+from langchain_classic.schema import SystemMessage, HumanMessage # sohbet mesajları sınıflandırıcısı
 from langchain_classic.memory import ConversationSummaryBufferMemory # konuşma geçmişi uzadığında özetleyerek tut
 
 
