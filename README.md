@@ -12,7 +12,10 @@ google_codes/
 ├── metin_temsili/            # Sayısal temsil yöntemleri
 ├── nlp_temel_gorevleri/      # Temel NLP görevleri
 ├── derin_ogrenme/            # RNN, GRU, LSTM modelleri
-└── gelismis_nlp_gorevleri/   # Transformer tabanlı ileri düzey görevler
+├── gelismis_nlp_gorevleri/   # Transformer tabanlı ileri düzey görevler
+├── akilli_asistan/           # Gemini API ile not/etkinlik asistanı (SQLite)
+├── doktor_asistani/          # LangChain + Gemini ile doktor asistanı chatbot
+└── akilli_turizm_rehberi/    # Ollama (Gemma3) ile turizm rehberi chatbot
 ```
 
 ---
@@ -64,6 +67,30 @@ google_codes/
 | `3_bilgi_getirme.py` | BERT embedding + cosine similarity ile bilgi getirme |
 | `4_metin_cevirisi.py` | MarianMT (Helsinki-NLP) ile İngilizce→Fransızca çeviri |
 
+### 6. Uygulamalı LLM Projeleri
+
+NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
+
+#### Akıllı Asistan (`akilli_asistan/`)
+| Dosya | Konu |
+|-------|------|
+| `assistant.py` | Gemini 2.5 Flash API ile chatbot (ham HTTP istekleri) |
+| `database.py` | Notlar ve etkinlikler için SQLite veritabanı işlemleri |
+| `main.py` | Proje tanımı ve bileşenlerin birleştirileceği giriş noktası |
+
+#### Doktor Asistanı (`doktor_asistani/`)
+| Dosya | Konu |
+|-------|------|
+| `doktor_asistani_terminal.py` | LangChain + Gemini 2.5 Flash ile terminal tabanlı, hafızalı (memory) doktor asistanı |
+| `doktor_asistani_api.py` | FastAPI ile web servisine çevrilmiş doktor asistanı, kullanıcı bazlı memory |
+| `client_test.py` | FastAPI servisini test eden istemci scripti |
+
+#### Akıllı Turizm Rehberi (`akilli_turizm_rehberi/`)
+| Dosya | Konu |
+|-------|------|
+| `akilli_turizm_rehberi_terminal.py` | Ollama (Gemma3 4B, local) ile terminal tabanlı turizm rehberi chatbot |
+| `akilli_turizm_rehberi_streamlit_streaming.py` | Streamlit arayüzü ve token bazlı streaming yanıt |
+
 ---
 
 ## Kullanılan Kütüphaneler
@@ -77,6 +104,12 @@ google_codes/
 - **matplotlib** — görselleştirme (PCA)
 - **Transformers (Hugging Face)** — BART, BERT, MarianMT modelleri
 - **PyTorch** — Transformer modellerinin çalışma ortamı
+- **LangChain** — LLM zinciri (chain), memory ve prompt yönetimi (doktor asistanı, turizm rehberi)
+- **FastAPI / uvicorn** — Doktor asistanını web servisine çevirmek için
+- **Streamlit** — Turizm rehberi için web arayüzü
+- **Ollama** — Gemma3 modelini local (on-prem) çalıştırmak için
+- **Google Gemini API** — Akıllı asistan ve doktor asistanı için LLM sağlayıcı
+- **SQLite** — Akıllı asistanın not ve etkinlik verilerini saklaması
 
 ---
 
@@ -88,6 +121,14 @@ python -m spacy download en_core_web_sm
 pip install transformers torch
 ```
 
+Uygulamalı LLM projelerinin (`akilli_asistan/`, `doktor_asistani/`, `akilli_turizm_rehberi/`) her biri kendi `requirements.txt` dosyasına sahiptir:
+
+```bash
+pip install -r akilli_asistan/requirements.txt
+pip install -r doktor_asistani/requirements.txt
+pip install -r akilli_turizm_rehberi/requirements.txt
+```
+
 ---
 
 ## Öğrenme Yolu
@@ -97,3 +138,5 @@ Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenm
 ```
 
 Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlenilmesi önerilir.
+
+Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
