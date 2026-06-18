@@ -16,6 +16,10 @@ venv/
 *.zip
 *.npy
 *.npz
+*.db
+*.sqlite
+*.sqlite3
+assistant_db
 
 # IDE
 .vscode/
