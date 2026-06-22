@@ -36,6 +36,16 @@ def initialize_db():
         """
     )
 
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS special_days (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            explanation TEXT NOT NULL,
+            explanation_date TEXT NOT NULL
+        )
+        """
+    )
+
     conn.commit() # değişiklikleri kaydet
     conn.close() # bağlantıyı kapat
 
@@ -76,6 +86,23 @@ def get_events():
     calender = cursor.fetchall()
     conn.close()
     return calender
+
+
+def add_special_days(explanation, explanation_date):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO special_days (explanation, explanation_date) VALUES (?, ?)", (explanation, explanation_date))
+    conn.commit()
+    conn.close()
+
+
+def get_special_days():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT explanation, explanation_date FROM special_days ORDER BY explanation_date DESC")
+    special_days = cursor.fetchall()
+    conn.close()
+    return special_days
 
 
 if __name__ == "__main__":
