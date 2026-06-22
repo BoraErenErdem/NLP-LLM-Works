@@ -24,10 +24,6 @@ Plan/Program:
 Kütüphaneler:
     - pip install requests
     - pip install python-dotenv
-
-ÖDEV:
-    - database.py dosyasında özel günler adında yeni bir tablo oluştur.
-    - assistant.py dosyasında detect_intent() fonksiyonundaki prompt'a özel günleri de ekle.
 """
 
 
