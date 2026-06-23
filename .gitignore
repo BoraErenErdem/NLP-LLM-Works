@@ -19,7 +19,11 @@ venv/
 *.db
 *.sqlite
 *.sqlite3
+*.faiss
 assistant_db
+
+# Sozlesme inceleme asistani verileri
+sozlesme_inceleme_asistani/data/
 
 # IDE
 .vscode/
