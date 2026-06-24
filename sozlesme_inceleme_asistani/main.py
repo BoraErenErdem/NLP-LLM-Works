@@ -37,11 +37,8 @@ Kütüphaneler:
     - pip install PyMuPDF -> PDF dosyasını yüklemek için gerekli
 
 pip freeze > requirements.txt
-"""
 
 
-
-"""
 Q1: What is the project topic and which AI model will be used?
 A: The project is an "LLM-Based Chatbot Project". The primary AI backend will be the Google Gemini model.
 
@@ -54,3 +51,53 @@ A: The total cost is a fixed net of 5,000 USD, split into three milestones: 30% 
 Q4: When are Intellectual Property (IP) rights transferred to the Client?
 A: All source codes and IP rights are completely and irrevocably transferred to the Client upon receipt of the final payment.
 """
+
+
+import os
+from dotenv import load_dotenv
+import pickle
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer # "all-MiniLM-L6-v2"
+import google.generativeai as genai # google'ın gemini modellerini daha pratik kullanmayı sağlar (deprecated)
+
+
+load_dotenv(r"C:\Projects\google_codes\sozlesme_inceleme_asistani\.env")
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
+gemini_model = genai.GenerativeModel("gemini-2.5-flash") # gemini modelini başlat (initialize)
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2") # embedding modeli
+
+# faiss vektörel db index dosyasını yükle (build_vector_db.py dosyasında önceden oluşturup kaydettiğim vektörel database)
+index = faiss.read_index("C:\Projects\google_codes\sozlesme_inceleme_asistani\data\sozlesme_ornegi.faiss")
+
+# parçalara ayrılmış (chunklanmış) metin verisini yükle
+with open("data/sozlesme_ornegi.pkl", "rb") as f:
+    chunks = pickle.load(f)
+
+# kullanıcıdan gelen soruları alır
+while True:
+    user_message = input(f"kullanıcı:")
+    if user_message.lower() in ["quit", "exit", "q"]:
+        print(f"çıkış yapılıyor.")
+        break
+    user_message_embedding = embedding_model.encode([user_message]) # faiss vektörel db'de arama yaparken 2D format istenilir..!
+
+    # faiss vektörel db'de embedding olan user_message'a en yakın 3 chunk aranır ve getirilir
+    k = 3 # en yakın 3 chunk
+    distances, indices = index.search(np.array(user_message_embedding), k=k) # distances -> bulunan chunk'ların kullanıcı sorusuna ne kadar uzak olduğu (L2 mesafesi)
+    # indices -> bulunan chunkların index numaraları
+
+    # bulunan chunkları birleştir ve bağlam (context) oluştur
+    retrieved_chunks = [chunks[i] for i in indices[0]] # ilk satırdaki chunk'ları alır ve retrieved_chunks değişkeninde birleştirir.
+    context = "\n-----\n".join(retrieved_chunks) # retrieved_chunks listesindeki chunk halindeki metinleri arasına ayırıcı koyarak birleştiriyor.
+
+    # llm'e gönderilecek sistem prompt'u
+    prompt = f"""
+        You are a contract lawyer AI assistant. Based on the contract context below, answer the user's question clearly.
+        Context: {context}
+        User message: {user_message}
+        Answer:
+        """
+    response = gemini_model.generate_content(prompt) # gemini 2.5 flash modelinden yanıt alma
+    print(f"AI: {response.text.strip()}")
