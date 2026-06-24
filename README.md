@@ -15,7 +15,8 @@ google_codes/
 ├── gelismis_nlp_gorevleri/   # Transformer tabanlı ileri düzey görevler
 ├── akilli_asistan/           # Gemini API ile not/etkinlik asistanı (SQLite)
 ├── doktor_asistani/          # LangChain + Gemini ile doktor asistanı chatbot
-└── akilli_turizm_rehberi/    # Ollama (Gemma3) ile turizm rehberi chatbot
+├── akilli_turizm_rehberi/    # Ollama (Gemma3) ile turizm rehberi chatbot
+└── sozlesme_inceleme_asistani/ # FAISS + Gemini ile RAG tabanlı sözleşme inceleme asistanı
 ```
 
 ---
@@ -91,6 +92,12 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 | `akilli_turizm_rehberi_terminal.py` | Ollama (Gemma3 4B, local) ile terminal tabanlı turizm rehberi chatbot |
 | `akilli_turizm_rehberi_streamlit_streaming.py` | Streamlit arayüzü ve token bazlı streaming yanıt |
 
+#### Sözleşme İnceleme Asistanı (`sozlesme_inceleme_asistani/`)
+| Dosya | Konu |
+|-------|------|
+| `build_vector_db.py` | PDF'den metin çıkarımı (PyMuPDF), chunklama, embedding (sentence-transformers) ve FAISS vektör veritabanı oluşturma |
+| `main.py` | Kullanıcı sorusunu vektörleştirip FAISS'te arama yapan ve Gemini 2.5 Flash ile RAG (Retrieval Augmented Generation) tabanlı yanıt üreten soru-cevap sistemi |
+
 ---
 
 ## Kullanılan Kütüphaneler
@@ -108,8 +115,11 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 - **FastAPI / uvicorn** — Doktor asistanını web servisine çevirmek için
 - **Streamlit** — Turizm rehberi için web arayüzü
 - **Ollama** — Gemma3 modelini local (on-prem) çalıştırmak için
-- **Google Gemini API** — Akıllı asistan ve doktor asistanı için LLM sağlayıcı
+- **Google Gemini API** — Akıllı asistan, doktor asistanı ve sözleşme inceleme asistanı için LLM sağlayıcı
 - **SQLite** — Akıllı asistanın not ve etkinlik verilerini saklaması
+- **sentence-transformers** — Sözleşme metinlerini embedding ile vektörleştirmek için (all-MiniLM-L6-v2)
+- **FAISS** — Sözleşme inceleme asistanında hızlı benzerlik araması yapan vektör veritabanı
+- **PyMuPDF** — Sözleşme PDF dosyasından metin çıkarımı için
 
 ---
 
@@ -121,12 +131,13 @@ python -m spacy download en_core_web_sm
 pip install transformers torch
 ```
 
-Uygulamalı LLM projelerinin (`akilli_asistan/`, `doktor_asistani/`, `akilli_turizm_rehberi/`) her biri kendi `requirements.txt` dosyasına sahiptir:
+Uygulamalı LLM projelerinin (`akilli_asistan/`, `doktor_asistani/`, `akilli_turizm_rehberi/`, `sozlesme_inceleme_asistani/`) her biri kendi `requirements.txt` dosyasına sahiptir:
 
 ```bash
 pip install -r akilli_asistan/requirements.txt
 pip install -r doktor_asistani/requirements.txt
 pip install -r akilli_turizm_rehberi/requirements.txt
+pip install -r sozlesme_inceleme_asistani/requirements.txt
 ```
 
 ---
@@ -139,4 +150,4 @@ Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenm
 
 Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlenilmesi önerilir.
 
-Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
+Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`, `sozlesme_inceleme_asistani`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
