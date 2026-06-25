@@ -25,6 +25,9 @@ assistant_db
 # Sozlesme inceleme asistani verileri
 sozlesme_inceleme_asistani/data/
 
+# Musteri destek botu verileri
+musteri_destek_botu/musteri_destek_faq.pdf
+
 # IDE
 .vscode/
 .idea/
