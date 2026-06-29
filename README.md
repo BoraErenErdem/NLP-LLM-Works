@@ -1,6 +1,6 @@
-# Doğal Dil İşleme (NLP) — Uyglamalı Öğrenme Rehberi
+﻿# Doğal Dil İşleme (NLP) — Uyglamalı Öğrenme Rehberi
 
-Bu repo, NLP öğrenme sürecimde tuttuğum kişisel notlar ve kod özetlerinden oluşmaktadır. Temel metin ön işlemeden derin öğrenme modellerine kadar konuları adım adım, Türkçe açıklamalarla ele almaktadır.
+Bu repo, NLP ve LLM öğrenme sürecimde tuttuğum kişisel notlar ve kod özetlerinden oluşmaktadır. Temel metin ön işlemeden derin öğrenme modellerine ve LLM tabanlı uygulama geliştirmeye kadar konuları adım adım, Türkçe açıklamalarla ele almaktadır.
 
 ---
 
@@ -16,7 +16,8 @@ google_codes/
 ├── akilli_asistan/           # Gemini API ile not/etkinlik asistanı (SQLite)
 ├── doktor_asistani/          # LangChain + Gemini ile doktor asistanı chatbot
 ├── akilli_turizm_rehberi/    # Ollama (Gemma3) ile turizm rehberi chatbot
-└── sozlesme_inceleme_asistani/ # FAISS + Gemini ile RAG tabanlı sözleşme inceleme asistanı
+├── sozlesme_inceleme_asistani/ # FAISS + Gemini ile RAG tabanlı sözleşme inceleme asistanı
+└── musteri_destek_botu/        # LaBSE + FAISS + Ollama (Gemma4) ile RAG tabanlı müşteri destek botu
 ```
 
 ---
@@ -98,6 +99,13 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 | `build_vector_db.py` | PDF'den metin çıkarımı (PyMuPDF), chunklama, embedding (sentence-transformers) ve FAISS vektör veritabanı oluşturma |
 | `main.py` | Kullanıcı sorusunu vektörleştirip FAISS'te arama yapan ve Gemini 2.5 Flash ile RAG (Retrieval Augmented Generation) tabanlı yanıt üreten soru-cevap sistemi |
 
+#### Müşteri Destek Botu (`musteri_destek_botu/`)
+| Dosya | Konu |
+|-------|------|
+| `load_pdf_and_embedding.py` | FAQ PDF'inden metin çıkarımı (PyPDF), chunk'lama, LaBSE embedding ve FAISS vektör database oluşturma/kaydetme |
+| `chatbot_rag_memory.py` | LangChain + Ollama (Gemma4:e4b) ile RAG + ConversationSummaryBufferMemory zinciri kurma ve terminal testi |
+| `streamlit_app.py` | Streamlit arayüzü: PDF yükleme, anlık embedding ve RAG + memory + LLM zinciriyle sohbet |
+
 ---
 
 ## Kullanılan Kütüphaneler
@@ -111,15 +119,16 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 - **matplotlib** — görselleştirme (PCA)
 - **Transformers (Hugging Face)** — BART, BERT, MarianMT modelleri
 - **PyTorch** — Transformer modellerinin çalışma ortamı
-- **LangChain** — LLM zinciri (chain), memory ve prompt yönetimi (doktor asistanı, turizm rehberi)
+- **LangChain** — LLM zinciri (chain), memory ve prompt yönetimi (doktor asistanı, turizm rehberi, müşteri destek botu)
 - **FastAPI / uvicorn** — Doktor asistanını web servisine çevirmek için
-- **Streamlit** — Turizm rehberi için web arayüzü
-- **Ollama** — Gemma3 modelini local (on-prem) çalıştırmak için
+- **Streamlit** — Turizm rehberi ve müşteri destek botu için web arayüzü
+- **Ollama** — Gemma3 / Gemma4 modellerini local (on-prem) çalıştırmak için
 - **Google Gemini API** — Akıllı asistan, doktor asistanı ve sözleşme inceleme asistanı için LLM sağlayıcı
 - **SQLite** — Akıllı asistanın not ve etkinlik verilerini saklaması
-- **sentence-transformers** — Sözleşme metinlerini embedding ile vektörleştirmek için (all-MiniLM-L6-v2)
-- **FAISS** — Sözleşme inceleme asistanında hızlı benzerlik araması yapan vektör veritabanı
+- **sentence-transformers** — Embedding ile vektörleştirme için (all-MiniLM-L6-v2: sözleşme; LaBSE: müşteri destek botu)
+- **FAISS** — Sözleşme inceleme asistanı ve müşteri destek botunda hızlı benzerlik araması yapan vektör veritabanı
 - **PyMuPDF** — Sözleşme PDF dosyasından metin çıkarımı için
+- **PyPDF** — Müşteri destek botunda FAQ PDF dosyasından metin çıkarımı için
 
 ---
 
@@ -131,13 +140,14 @@ python -m spacy download en_core_web_sm
 pip install transformers torch
 ```
 
-Uygulamalı LLM projelerinin (`akilli_asistan/`, `doktor_asistani/`, `akilli_turizm_rehberi/`, `sozlesme_inceleme_asistani/`) her biri kendi `requirements.txt` dosyasına sahiptir:
+Uygulamalı LLM projelerinin (`akilli_asistan/`, `doktor_asistani/`, `akilli_turizm_rehberi/`, `sozlesme_inceleme_asistani/`, `musteri_destek_botu/`) her biri kendi `requirements.txt` dosyasına sahiptir:
 
 ```bash
 pip install -r akilli_asistan/requirements.txt
 pip install -r doktor_asistani/requirements.txt
 pip install -r akilli_turizm_rehberi/requirements.txt
 pip install -r sozlesme_inceleme_asistani/requirements.txt
+pip install -r musteri_destek_botu/requirements.txt
 ```
 
 ---
@@ -150,4 +160,4 @@ Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenm
 
 Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlenilmesi önerilir.
 
-Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`, `sozlesme_inceleme_asistani`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
+Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`, `sozlesme_inceleme_asistani`, `musteri_destek_botu`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
