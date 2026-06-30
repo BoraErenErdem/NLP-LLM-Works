@@ -30,8 +30,8 @@ def create_rag_tool(pdf_path: str, llm): # bir kez çalışıcak olan rag fabrik
     # return_source_documents=False -> yanıt verirken kaynak belgelerinin yani chunk'ların döndürülüp döndürülmemesini belirtir.
     def rag_query(query: str): # agent her soru sorduğunda tekrar tekrar çalışacak olan fonksiyon.
         """
-        soruya göre pdf'ten en alakalı bilgiyi getirir.
+        soruya göre vektör database'den en alakalı bilgiyi getirir.
         """
         response = rag_chain.invoke({"question": query, "chat_history": []})
-        return f"belgede bulunan bilgi: {response}"
+        return f"vector database'de bulunan bilgi: {response}"
     return Tool(name="rag_tool", func=rag_query, description="müşteri destek sss belgesinden bilgi araması yapar.") # func=rag_query -> agent her seferinde önceden hazırlanmış rag_chain'i kullanır..!
