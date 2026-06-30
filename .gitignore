@@ -20,6 +20,7 @@ venv/
 *.sqlite
 *.sqlite3
 *.faiss
+*.pdf
 assistant_db
 
 # Sozlesme inceleme asistani verileri
@@ -27,6 +28,9 @@ sozlesme_inceleme_asistani/data/
 
 # Musteri destek botu verileri
 musteri_destek_botu/musteri_destek_faq.pdf
+
+# ai_agents_yapay_zeka_asistani verileri
+ai_agents_yapay_zeka_asistani/data/
 
 # IDE
 .vscode/
