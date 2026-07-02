@@ -1,4 +1,4 @@
-﻿# Doğal Dil İşleme (NLP) — Uyglamalı Öğrenme Rehberi
+﻿# Doğal Dil İşleme (NLP) & Büyük Dil Modelleri (LLM) — Uygulamalı Öğrenme Rehberi
 
 Bu repo, NLP ve LLM öğrenme sürecimde tuttuğum kişisel notlar ve kod özetlerinden oluşmaktadır. Temel metin ön işlemeden derin öğrenme modellerine ve LLM tabanlı uygulama geliştirmeye kadar konuları adım adım, Türkçe açıklamalarla ele almaktadır.
 
@@ -17,7 +17,8 @@ google_codes/
 ├── doktor_asistani/          # LangChain + Gemini ile doktor asistanı chatbot
 ├── akilli_turizm_rehberi/    # Ollama (Gemma3) ile turizm rehberi chatbot
 ├── sozlesme_inceleme_asistani/ # FAISS + Gemini ile RAG tabanlı sözleşme inceleme asistanı
-└── musteri_destek_botu/        # LaBSE + FAISS + Ollama (Gemma4) ile RAG tabanlı müşteri destek botu
+├── musteri_destek_botu/        # LaBSE + FAISS + Ollama (Gemma4) ile RAG tabanlı müşteri destek botu
+└── ai_agents_yapay_zeka_asistani/ # LangChain ReAct + Gemini 2.5 Flash ile çok araçlı (multi-tool) ajan sistemi
 ```
 
 ---
@@ -106,6 +107,26 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 | `chatbot_rag_memory.py` | LangChain + Ollama (Gemma4:e4b) ile RAG + ConversationSummaryBufferMemory zinciri kurma ve terminal testi |
 | `streamlit_app.py` | Streamlit arayüzü: PDF yükleme, anlık embedding ve RAG + memory + LLM zinciriyle sohbet |
 
+#### Çok Araçlı Yapay Zeka Ajanı (`ai_agents_yapay_zeka_asistani/`)
+
+> Detaylı dokümantasyon için: [`ai_agents_yapay_zeka_asistani/README.md`](ai_agents_yapay_zeka_asistani/README.md)
+
+LangChain ReAct (ZERO_SHOT_REACT_DESCRIPTION) mimarisi üzerine kurulu, 5 araçlı, kullanıcı bazlı hafızalı, FastAPI + Streamlit destekli çok araçlı yapay zeka ajan sistemi.
+
+| Dosya / Klasör | Konu |
+|-------|------|
+| `main_agent.py` | Temel ajan tanımı — LangChain + Gemini 2.5 Flash + Groq Llama 3.3 70b, terminal testi |
+| `fast_api.py` | FastAPI `/ask` endpoint — kullanıcı bazlı `ConversationSummaryBufferMemory` |
+| `app_streamlit.py` | Streamlit sohbet arayüzü |
+| `client.py` | FastAPI'ye istek gönderen terminal istemcisi |
+| `tools/calculator_tool.py` | `@tool` dekoratörü ile matematiksel hesap aracı |
+| `tools/custom_discount_tool.py` | Doğal dilden fiyat çıkarımı ve %10 indirim uygulama |
+| `tools/rag_tool.py` | PyPDF → chunking → LaBSE embedding → FAISS → ConversationalRetrievalChain |
+| `tools/currency_converter_tool.py` | exchangerate-api.com ile gerçek zamanlı döviz çevirici |
+| `data/musteri_destek_faq.pdf` | RAG aracının kullandığı müşteri destek SSS belgesi |
+
+**Araçlar:** RAG · Hesap Makinesi · İndirim Hesaplayıcı · Web Araması (SerpAPI) · Döviz Çevirici
+
 ---
 
 ## Kullanılan Kütüphaneler
@@ -123,7 +144,9 @@ NLP modüllerinden bağımsız, LLM tabanlı uçtan uca uygulama projeleri.
 - **FastAPI / uvicorn** — Doktor asistanını web servisine çevirmek için
 - **Streamlit** — Turizm rehberi ve müşteri destek botu için web arayüzü
 - **Ollama** — Gemma3 / Gemma4 modellerini local (on-prem) çalıştırmak için
-- **Google Gemini API** — Akıllı asistan, doktor asistanı ve sözleşme inceleme asistanı için LLM sağlayıcı
+- **Google Gemini API** — Akıllı asistan, doktor asistanı, sözleşme inceleme asistanı ve ajan sistemi için LLM sağlayıcı
+- **Groq API** — Ajan sisteminde Llama 3.3 70b Versatile modeli için alternatif LLM sağlayıcı
+- **SerpAPI** — Ajan sisteminde web araması (SearchTool) için
 - **SQLite** — Akıllı asistanın not ve etkinlik verilerini saklaması
 - **sentence-transformers** — Embedding ile vektörleştirme için (all-MiniLM-L6-v2: sözleşme; LaBSE: müşteri destek botu)
 - **FAISS** — Sözleşme inceleme asistanı ve müşteri destek botunda hızlı benzerlik araması yapan vektör veritabanı
@@ -148,6 +171,7 @@ pip install -r doktor_asistani/requirements.txt
 pip install -r akilli_turizm_rehberi/requirements.txt
 pip install -r sozlesme_inceleme_asistani/requirements.txt
 pip install -r musteri_destek_botu/requirements.txt
+pip install -r ai_agents_yapay_zeka_asistani/requirements.txt
 ```
 
 ---
@@ -160,4 +184,4 @@ Metin Ön İşleme → Metin Temsili → Temel NLP Görevleri → Derin Öğrenm
 
 Her modül bir öncekinin üzerine inşa edilmiştir. Sırayla ilerlenilmesi önerilir.
 
-Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`, `sozlesme_inceleme_asistani`, `musteri_destek_botu`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir.
+Uygulamalı LLM projeleri (`akilli_asistan`, `doktor_asistani`, `akilli_turizm_rehberi`, `sozlesme_inceleme_asistani`, `musteri_destek_botu`, `ai_agents_yapay_zeka_asistani`) bu sıralı öğrenme yolundan bağımsız, paralel bir uygulama pratiği olarak yürütülmektedir. Ajan projesi, önceki tüm LLM projelerinde edinilen RAG, memory, FastAPI ve Streamlit bilgilerini tek bir sistemde birleştiren final projesidir.
