@@ -30,7 +30,7 @@ google_llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7, g
 groq_llm = ChatGroq(model="llama-3.3-70b-versatile", api_key=GROQ_API_KEY)
 
 search_tool = SerpAPIWrapper(serpapi_api_key=SERPAPI_API_KEY)
-rag_tool = create_rag_tool(pdf_path="data/musteri_destek_faq.pdf", llm=groq_llm)
+rag_tool = create_rag_tool(pdf_path="data/musteri_destek_faq.pdf", llm=google_llm)
 
 tools = [
     Tool(name="search_tool", func=search_tool.run, description="google araması veya web araması yapar."),
@@ -40,13 +40,13 @@ tools = [
     currency_converter
 ]
 
-agent = initialize_agent(tools=tools, llm=groq_llm, agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION, handle_parsing_errors=True, max_iterations=5, early_stopping_method="generate", verbose=True)
+agent = initialize_agent(tools=tools, llm=google_llm, agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION, handle_parsing_errors=True, max_iterations=5, early_stopping_method="generate", verbose=True)
 
 # memory kullanımı
 user_memories = {}
 def get_user_memory(user_id:str):
     if user_id not in user_memories:
-        user_memories[user_id] = ConversationSummaryBufferMemory(llm=groq_llm, memory_key="chat_history", return_messages=True) # eğer user_id user_memories içinde yoksa ekler.
+        user_memories[user_id] = ConversationSummaryBufferMemory(llm=google_llm, memory_key="chat_history", return_messages=True) # eğer user_id user_memories içinde yoksa ekler.
     return user_memories[user_id]
 
 # fast api yapılandırması
